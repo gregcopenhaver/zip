@@ -293,13 +293,13 @@ func readDirectoryHeader(f *File, r io.Reader) error {
 			switch tag {
 			case zip64ExtraId:
 				// update directory values from the zip64 extra block
-				if len(eb) >= 8 {
+				if f.UncompressedSize == 0xffffffff && len(eb) >= 8 {
 					f.UncompressedSize64 = eb.uint64()
 				}
-				if len(eb) >= 8 {
+				if f.CompressedSize == 0xffffffff && len(eb) >= 8 {
 					f.CompressedSize64 = eb.uint64()
 				}
-				if len(eb) >= 8 {
+				if f.headerOffset == 0xffffffff && len(eb) >= 8 {
 					f.headerOffset = int64(eb.uint64())
 				}
 			case winzipAesExtraId:
